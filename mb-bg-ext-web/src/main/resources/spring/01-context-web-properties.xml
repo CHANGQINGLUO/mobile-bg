@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
+
+	<!-- Property Location Factory based on hostname -->
+	<bean id="propertiesLocationFactory" class="com.mb.framework.util.property.HostnameAwareList">
+		<property name="fallbackToDefault" value="true" />
+		<property name="hostnameValueListMap">
+			<map>
+				<entry key="default">
+					<list>
+						<value>classpath:properties/DEV/common.properties</value>
+						<value>classpath:properties/DEV/jdbc.properties</value>
+						<value>classpath:properties/DEV/mail.properties</value>
+						
+					</list>
+				</entry>
+				<entry key="X01BISMOAPP1A"> <!-- SIT/BRONZE environment -->
+					<list>
+						<value>classpath:properties/SIT/jdbc.properties</value>
+						<value>classpath:properties/SIT/common.properties</value>
+						<value>classpath:properties/SIT/mail.properties</value>
+					</list>
+				</entry>
+				<entry key="X01SISMOAPP1A,X01SISMOAPP2A"> <!-- UAT/SILVER environment -->
+					<list>
+						<value>classpath:properties/UAT/jdbc.properties</value>
+						<value>classpath:properties/UAT/common.properties</value>
+						<value>classpath:properties/UAT/mail.properties</value>
+					</list>
+				</entry>
+				<entry key="X01GISMOAPP1A,X01GISMOAPP2A"> <!-- PROD/GOLD environment -->
+					<list>
+						<value>classpath:properties/PROD/jdbc.properties</value>
+						<value>classpath:properties/PROD/common.properties</value>
+						<value>classpath:properties/PROD/mail.properties</value>
+					</list>
+				</entry>
+				<entry key="X01RISMOAPP1A,X01RISMOAPP2A"> <!-- DR environment -->
+					<list>
+						<value>classpath:properties/DR/jdbc.properties</value>
+						<value>classpath:properties/DR/common.properties</value>
+						<value>classpath:properties/DR/mail.properties</value>
+					</list>
+				</entry>				
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="propertyFactoryBean" class="org.springframework.beans.factory.config.PropertiesFactoryBean" >  
+		<property name="locations">
+			<bean factory-bean="propertiesLocationFactory" factory-method="getValueList" />
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound">
+			<value>true</value>
+		</property>
+		<property name="systemPropertiesModeName">
+			<value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value>
+		</property>
+		<property name="properties">
+			<ref bean="propertyFactoryBean" />
+		</property>
+	</bean>
+	
+	<!-- use this bean for lookup of property within application -->	
+	<bean id="propertyRepository" class="com.mb.framework.util.property.PropertyRepository" >  
+		<property name="repository">
+			<ref bean="propertyFactoryBean" />
+		</property>
+	</bean>  
+	
+	
+</beans>

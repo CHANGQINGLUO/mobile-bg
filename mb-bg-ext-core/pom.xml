@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>mb-bg-ext-core</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.mb.ext</groupId>
+		<artifactId>mb-bg-ext</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../mb-bg-ext/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<com.mb.framework.version>0.0.1-SNAPSHOT</com.mb.framework.version>
+		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
+		<junit.version>4.11</junit.version>
+		<h2db.version>1.4.177</h2db.version>
+		<jta.version>1.1</jta.version>
+		<oracle.version>11.2.0.3</oracle.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.mb.framework</groupId>
+			<artifactId>mb-bg-fw-core</artifactId>
+			<version>${com.mb.framework.version}</version>
+		</dependency>
+
+		<!-- Support for testing Spring applications with tools such as JUnit and 
+			TestNG This artifact is generally always defined with a 'test' scope for 
+			the integration testing framework and unit testing stubs -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2db.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>${jta.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>${oracle.version}</version>
+			<scope>test</scope>
+		</dependency>
+ -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+	
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>repo</id>
+			<url>https://raw.github.com/CHANGQINGLUO/maven-repo/master</url>
+		</repository>
+	</repositories>
+</project>

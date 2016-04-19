@@ -1,0 +1,28 @@
+
+  
+    
+--------------------------------------------------------
+--  DDL for Table SYS_PARAM
+--------------------------------------------------------
+
+  CREATE TABLE SYS_PARAM 
+   (	PARAM_UUID VARCHAR(100) NOT NULL,
+        PARAM_TYPE VARCHAR(10),
+	PARAM_CODE VARCHAR(100),
+	PARAM_VALUE VARCHAR(100),
+	BUNDLE_ID VARCHAR(10),
+	IS_DELETED VARCHAR(1) DEFAULT '0', 	
+	DATE_CREATE TIMESTAMP NOT NULL,
+	CREATE_BY VARCHAR(50), 
+	DATE_UPDATE TIMESTAMP,
+	UPDATE_BY VARCHAR(50)
+   );  
+  
+
+
+  ALTER TABLE SYS_PARAM ADD CONSTRAINT SYS_PARAM_PK PRIMARY KEY (PARAM_UUID);
+  
+  commit;
+
+  
+  

@@ -1,0 +1,29 @@
+************************ Instructions to install the mobile application background******************
+This application template is used to build the mobile application background, base framework and application
+sample has been provided here, you have to extend based on your requirement.
+
+
+******Application Framework******
+1. Web Layer - Spring Web MVC
+2. Business Layer - Spring
+3. Persistence Layer - Hibernate JPA
+4. Database - My SQL
+5. Application Server Type - Jboss
+6. J2EE Technology
+
+******Prerequisite******
+1. JDK 1.6
+2. JBoss EAP 6.3
+3. MySQL Server 5.7
+4. Eclipse Luna Release
+
+******Deployment Steps in development environment******
+1. change mysql root password to 'password'
+2. create schema 'cor' in mysql
+3. run db script in folder mb-bg-fw-core/sql/ddl
+4. run db script in folder mb-bg-fw-core/sql/init_data
+5. run db script in folder mb-bg-ext/sql/ddl
+6. run db script in folder mb-bg-ext/sql/init_data
+7. import maven project into eclipse (total 6 projects)
+8. create datasource 'java:jboss/datasources/MBEXT' in jboss
+9. Build all projects and deploy mb-bg-ext-web to jboss

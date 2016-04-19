@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
+
+	<!-- Property Location Factory based on hostname -->
+	<bean id="propertiesLocationFactory" class="com.mb.framework.util.property.HostnameAwareList">
+		<property name="fallbackToDefault" value="true" />
+		<property name="hostnameValueListMap">
+			<map>
+				<entry key="default">
+					<list>
+						<value>classpath:properties/DEV/common.properties</value>
+						<value>classpath:properties/DEV/jdbc.properties</value>
+					</list>
+				</entry>
+				<entry key="a01btmsdb1a"> <!-- SIT/BRONZE environment -->
+					<list>
+						<value>classpath:resources/properties/SIT/jdbc.properties</value>
+						<value>classpath:resources/properties/SIT/common.properties</value>
+					</list>
+				</entry>
+				<entry key="a01stmsdb2a,a01stmsdb2b,a01stmsdb2z"> <!-- UAT/SILVER environment -->
+					<list>
+						<value>classpath:resources/properties/UAT/jdbc.properties</value>
+						<value>classpath:resources/properties/UAT/common.properties</value>
+					</list>
+				</entry>
+				<entry key="a01gtmsdb2a,a01gtmsdb2b,a01gtmsdb2z"> <!-- PROD/GOLD environment -->
+					<list>
+						<value>classpath:resources/properties/PROD/jdbc.properties</value>
+						<value>classpath:resources/properties/PROD/common.properties</value>
+					</list>
+				</entry>
+				<entry key="a01rtmsdb1a"> <!-- DR environment -->
+					<list>
+						<value>classpath:resources/properties/DR/jdbc.properties</value>
+						<value>classpath:resources/properties/DR/common.properties</value>
+					</list>
+				</entry>				
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="propertyFactoryBean" class="org.springframework.beans.factory.config.PropertiesFactoryBean" >  
+		<property name="locations">
+			<bean factory-bean="propertiesLocationFactory" factory-method="getValueList" />
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound">
+			<value>true</value>
+		</property>
+		<property name="systemPropertiesModeName">
+			<value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value>
+		</property>
+		<property name="properties">
+			<ref bean="propertyFactoryBean" />
+		</property>
+	</bean>
+	
+	<!-- use this bean for lookup of property within application -->	
+	<bean id="propertyRepository" class="com.mb.framework.util.property.PropertyRepository" >  
+		<property name="repository">
+			<ref bean="propertyFactoryBean" />
+		</property>
+	</bean>  
+	
+	
+</beans>
