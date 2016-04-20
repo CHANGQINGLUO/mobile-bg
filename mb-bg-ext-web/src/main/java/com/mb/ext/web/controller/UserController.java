@@ -28,6 +28,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -881,7 +882,7 @@ public class UserController {
 			payRequest.setNotify_url(WechatConstants.NOTIFY_URL);
 			payRequest.setTrade_type("APP");
 			payRequest.setAttach("ZHONGHUANBO");
-		} catch (BusinessException e) {
+		} catch (Exception e) {
 			resultDTO.setCode("1");
 			resultDTO.setMessage("下单失败");
 			return resultDTO;
@@ -937,7 +938,11 @@ public class UserController {
 		}*/);
 		xstreamReq.alias("xml", payRequest.getClass());
 		String requestXML = xstreamReq.toXML(payRequest).replace("\n", "").replace("__", "_");
-		
+		try {
+			requestXML = new String(requestXML.getBytes("utf-8"),"iso-8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 		
 		//����΢�Žӿ�
 		BufferedReader reader = null;
