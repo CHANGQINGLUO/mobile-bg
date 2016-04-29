@@ -43,6 +43,10 @@
 						<span class="label">价格</span><input name="price" class="value"
 							type="text" placeholder=价格></input>
 					</div>
+					<div class="two-line-input">
+						<span class="label">预付金额</span><input name="prePrice" class="value"
+							type="text" placeholder=预付金额></input>
+					</div>
 					<div class="two-line-textarea">
 						<span class="label">产品描述(如需引用图片, 请使用图片查询功能的引用路径)</span>
 						<textarea name="description" class="article-content" placeholder=描述></textarea>

@@ -658,6 +658,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			productEntity.setType(productDTO.getType());
 			productEntity.setDescription(productDTO.getDescription());
 			productEntity.setPrice(productDTO.getPrice());
+			productEntity.setPrePrice(productDTO.getPrePrice());
 			productEntity.setPoints(productDTO.getPoints());
 			productEntity.setUpdateBy("Admin");
 			productEntity.setCreateBy("Admin");
@@ -684,6 +685,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				productDTO.setName(pProductEntity.getName());
 				productDTO.setDescription(pProductEntity.getDescription());
 				productDTO.setPrice(pProductEntity.getPrice());
+				productDTO.setPrePrice(pProductEntity.getPrePrice());
 				productDTO.setType(pProductEntity.getType());
 				productDTO.setPoints(pProductEntity.getPoints());
 				productDTO.setUuid(pProductEntity.getProductUuid());
@@ -711,6 +713,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				productDTO.setName(pProductEntity.getName());
 				productDTO.setDescription(pProductEntity.getDescription());
 				productDTO.setPrice(pProductEntity.getPrice());
+				productDTO.setPrePrice(pProductEntity.getPrePrice());
 				productDTO.setType(pProductEntity.getType());
 				productDTO.setPoints(pProductEntity.getPoints());
 				productDTO.setUuid(pProductEntity.getProductUuid());
@@ -734,6 +737,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				productDTO.setName(pProductEntity.getName());
 				productDTO.setDescription(pProductEntity.getDescription());
 				productDTO.setPrice(pProductEntity.getPrice());
+				productDTO.setPrePrice(pProductEntity.getPrePrice());
 				productDTO.setType(pProductEntity.getType());
 				productDTO.setPoints(pProductEntity.getPoints());
 				productDTO.setUuid(pProductEntity.getProductUuid());
@@ -755,6 +759,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			orderEntity.setUser(userEntity);
 			orderEntity.setProduct(productEntity);
 			orderEntity.setAmount(orderDTO.getAmount());
+			orderEntity.setPreAmount(orderDTO.getPreAmount());
 			orderEntity.setCount(orderDTO.getCount());
 			orderEntity.setCustomerName(orderDTO.getCustomerName());
 			orderEntity.setMailAddress(orderDTO.getMailAddress());
@@ -781,6 +786,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			else {
 				OrderDTO orderDTO = new OrderDTO();
 				orderDTO.setAmount(pOrderEntity.getAmount());
+				orderDTO.setPreAmount(pOrderEntity.getPreAmount());
 				orderDTO.setCount(pOrderEntity.getCount());
 				orderDTO.setCustomerName(pOrderEntity.getCustomerName());
 				orderDTO.setMailAddress(pOrderEntity.getMailAddress());
@@ -818,6 +824,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				if (pOrderEntity.getStatus().equals(status)) {
 					OrderDTO orderDTO = new OrderDTO();
 					orderDTO.setAmount(pOrderEntity.getAmount());
+					orderDTO.setPreAmount(pOrderEntity.getPreAmount());
 					orderDTO.setCount(pOrderEntity.getCount());
 					orderDTO.setCustomerName(pOrderEntity.getCustomerName());
 					orderDTO.setMailAddress(pOrderEntity.getMailAddress());
@@ -858,6 +865,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				OrderEntity pOrderEntity = iterator.next();
 				OrderDTO orderDTO = new OrderDTO();
 				orderDTO.setAmount(pOrderEntity.getAmount());
+				orderDTO.setPreAmount(pOrderEntity.getPreAmount());
 				orderDTO.setCount(pOrderEntity.getCount());
 				orderDTO.setCustomerName(pOrderEntity.getCustomerName());
 				orderDTO.setMailAddress(pOrderEntity.getMailAddress());
@@ -928,6 +936,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				OrderEntity pOrderEntity = iterator.next();
 				OrderDTO orderDTO = new OrderDTO();
 				orderDTO.setAmount(pOrderEntity.getAmount());
+				orderDTO.setPreAmount(pOrderEntity.getPreAmount());
 				orderDTO.setCount(pOrderEntity.getCount());
 				orderDTO.setCustomerName(pOrderEntity.getCustomerName());
 				orderDTO.setMailAddress(pOrderEntity.getMailAddress());
@@ -1065,6 +1074,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				if (pOrderEntity.getStatus().equals(status)) {
 					OrderDTO orderDTO = new OrderDTO();
 					orderDTO.setAmount(pOrderEntity.getAmount());
+					orderDTO.setPreAmount(pOrderEntity.getPreAmount());
 					orderDTO.setCount(pOrderEntity.getCount());
 					orderDTO.setCustomerName(pOrderEntity.getCustomerName());
 					orderDTO.setMailAddress(pOrderEntity.getMailAddress());
@@ -1353,6 +1363,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			ProductEntity productEntity = productDAO.getProductByUUID(productDTO.getUuid());
 			productEntity.setName(productDTO.getName());
 			productEntity.setPrice(productDTO.getPrice());
+			productEntity.setPrePrice(productDTO.getPrePrice());
 			productEntity.setPoints(productDTO.getPoints());
 			productEntity.setDescription(productDTO.getDescription());
 			productEntity.setType(productDTO.getType());
@@ -1390,6 +1401,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 				productDTO.setName(pProductEntity.getName());
 				productDTO.setDescription(pProductEntity.getDescription());
 				productDTO.setPrice(pProductEntity.getPrice());
+				productDTO.setPrePrice(pProductEntity.getPrePrice());
 				productDTO.setType(pProductEntity.getType());
 				productDTO.setPoints(pProductEntity.getPoints());
 				productDTO.setUuid(pProductEntity.getProductUuid());
@@ -1411,6 +1423,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			else {
 				OrderDTO orderDTO = new OrderDTO();
 				orderDTO.setAmount(pOrderEntity.getAmount());
+				orderDTO.setPreAmount(pOrderEntity.getPreAmount());
 				orderDTO.setCount(pOrderEntity.getCount());
 				orderDTO.setCustomerName(pOrderEntity.getCustomerName());
 				orderDTO.setMailAddress(pOrderEntity.getMailAddress());

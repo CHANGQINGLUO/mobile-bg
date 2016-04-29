@@ -578,8 +578,24 @@ public class UserController {
 		try {
 			rDTO.setOrderNumber(RandomStringUtils.randomNumeric(32));
 			userService.addOrder(rDTO);
+			
+			String subject = propertyRepository
+					.getProperty("mail.addorder.subject");
+			String body = propertyRepository.getProperty(
+					"mail.addorder.body").
+					replace("{1}", rDTO.getOrderNumber()).
+					replace("{2}", rDTO.getCustomerName()).
+					replace("{3}", rDTO.getPhone()).
+					replace("{4}", rDTO.getMailAddress()).
+					replace("{5}", rDTO.getProductName()).
+					replace("{6}", rDTO.getAmount().toString()).
+					replace("{7}", rDTO.getPreAmount().toString());
+			String sentTo = propertyRepository
+					.getProperty("mail.smtp.username");
+			mailSenderUtil.sendMail(subject, body, sentTo, "", null);
+			
 			resultDTO.setCode("0");
-			resultDTO.setMessage("Get product list successfully");
+			resultDTO.setMessage("Add order successfully");
 			resultDTO.setBody(rDTO);
 		} catch (BusinessException e) {
 			resultDTO.setCode("1");

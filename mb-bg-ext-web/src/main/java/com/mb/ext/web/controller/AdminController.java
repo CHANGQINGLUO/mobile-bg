@@ -467,6 +467,7 @@ public class AdminController {
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String priceStr = request.getParameter("price");
+		String prePriceStr = request.getParameter("prePrice");
 		String pointsStr = request.getParameter("points");
 		String viewName = "product-list";
 		ProductDTO dto = new ProductDTO();
@@ -474,7 +475,9 @@ public class AdminController {
 		dto.setDescription(description);
 		try{
 			BigDecimal price = new BigDecimal(priceStr);
+			BigDecimal prePrice = new BigDecimal(prePriceStr);
 			dto.setPrice(price);
+			dto.setPrePrice(prePrice);
 		}catch(Exception e){
 			viewName = "product-create";
 			model.addAttribute("message", "价格格式不对");
@@ -810,6 +813,7 @@ public class AdminController {
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String priceStr = request.getParameter("price");
+		String prePriceStr = request.getParameter("prePrice");
 		String pointsStr = request.getParameter("points");
 		String viewName = "product-list";
 		ProductDTO dto = new ProductDTO();
@@ -819,7 +823,9 @@ public class AdminController {
 		dto.setType(type);
 		try{
 			BigDecimal price = new BigDecimal(priceStr);
+			BigDecimal prePrice = new BigDecimal(prePriceStr);
 			dto.setPrice(price);
+			dto.setPrePrice(prePrice);
 		}catch(Exception e){
 			viewName = "product-create";
 			model.addAttribute("message", "价格格式不对");

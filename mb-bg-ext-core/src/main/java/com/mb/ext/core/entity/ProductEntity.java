@@ -105,6 +105,17 @@ public class ProductEntity extends AbstractBaseEntity
 	
 	@Column(name = "PRICE", precision=12, scale=2)
 	private BigDecimal price;
+	
+	@Column(name = "PREPRICE", precision=12, scale=2)
+	private BigDecimal prePrice;
+
+	public BigDecimal getPrePrice() {
+		return prePrice;
+	}
+
+	public void setPrePrice(BigDecimal prePrice) {
+		this.prePrice = prePrice;
+	}
 
 	
 

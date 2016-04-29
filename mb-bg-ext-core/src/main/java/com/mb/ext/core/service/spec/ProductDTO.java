@@ -18,9 +18,16 @@ public class ProductDTO extends AbstractBaseDTO{
 	private String id;
 	private String type;
 	private BigDecimal price;
+	private BigDecimal prePrice;
 	private String description;
 	private Date createDate;
 	
+	public BigDecimal getPrePrice() {
+		return prePrice;
+	}
+	public void setPrePrice(BigDecimal prePrice) {
+		this.prePrice = prePrice;
+	}
 	public Date getCreateDate() {
 		return createDate;
 	}

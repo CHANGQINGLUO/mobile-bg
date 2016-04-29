@@ -53,6 +53,10 @@
 					<span class="label">产品价格(元)</span><input class="value" type="text" name="price" 
 						value="${productDTO.price}" placeholder=产品价格></input>
 				</div>
+				<div class="two-line-input">
+					<span class="label">预付金额(元)</span><input class="value" type="text" name="prePrice" 
+						value="${productDTO.prePrice}" placeholder=预付金额></input>
+				</div>
 				<div class="two-line-textarea">
 					<span class="label">产品描述(如需引用图片, 请使用图片查询功能的引用路径)</span>
 					<textarea class="article-content" name="description" placeholder=内容>${productDTO.description}</textarea>

@@ -77,8 +77,16 @@ public class OrderDTO  extends AbstractBaseDTO{
 	}
 	private String productUuid;
 	private BigDecimal amount;
+	private BigDecimal preAmount;
 	private int count;
 	private String status;
+	public BigDecimal getPreAmount() {
+		return preAmount;
+	}
+
+	public void setPreAmount(BigDecimal preAmount) {
+		this.preAmount = preAmount;
+	}
 	private String mailAddress;
 	public String getUuid() {
 		return uuid;

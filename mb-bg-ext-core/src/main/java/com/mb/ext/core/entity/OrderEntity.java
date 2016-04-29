@@ -63,6 +63,17 @@ public class OrderEntity extends AbstractBaseEntity
 	
 	@Column(name = "AMOUNT", precision=12, scale=2)
 	private BigDecimal amount ;
+
+	public BigDecimal getPreAmount() {
+		return preAmount;
+	}
+
+	public void setPreAmount(BigDecimal preAmount) {
+		this.preAmount = preAmount;
+	}
+
+	@Column(name = "PREAMOUNT", precision=12, scale=2)
+	private BigDecimal preAmount ;
 	
 	public int getCount() {
 		return count;
