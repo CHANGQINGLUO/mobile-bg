@@ -890,7 +890,7 @@ public class UserController {
 			OrderDTO orderDTO = userService.getOrderByNumber(payDTO
 					.getOut_trade_no());
 			String productName = orderDTO.getProductName();
-			BigDecimal amount = orderDTO.getAmount();
+			BigDecimal amount = orderDTO.getPreAmount();
 			payRequest.setBody(productName);
 			payRequest.setTotal_fee(amount.multiply(new BigDecimal(100))
 					.intValue());
