@@ -108,6 +108,16 @@ public class UserController {
 	public ResultDTO registerUser(@RequestBody UserDTO userDTO) {
 		ResultDTO resultDTO = new ResultDTO();
 		boolean result;
+		String loginId = userDTO.getLoginId();
+		try{
+			userService.getUser(loginId);
+			resultDTO.setCode("2");
+			resultDTO.setMessage("用户已注册");
+			return resultDTO;
+		}catch(Exception e){
+			logger.info("user "+loginId +" not registered, continue to register");
+		}
+		
 		try {
 			if (userDTO.getClientCode() == null
 					|| userDTO.getClientCode().trim().equals(""))
@@ -145,6 +155,15 @@ public class UserController {
 	@ResponseBody
 	public ResultDTO registerAdvisor(@RequestBody UserDTO userDTO) {
 		ResultDTO resultDTO = new ResultDTO();
+		String loginId = userDTO.getLoginId();
+		try{
+			userService.getUser(loginId);
+			resultDTO.setCode("2");
+			resultDTO.setMessage("用户已注册");
+			return resultDTO;
+		}catch(Exception e){
+			logger.info("user "+loginId +" not registered, continue to register");
+		}
 		try {
 			boolean result = userService.registerAdvisor(
 					userDTO.getInternalUserId(), userDTO.getLoginId(),

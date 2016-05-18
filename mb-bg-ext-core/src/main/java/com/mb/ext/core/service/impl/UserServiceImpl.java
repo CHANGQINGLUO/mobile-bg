@@ -193,18 +193,30 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			UserEntity userEntity = userDAO.getUser(id);
 			if (userEntity == null)
 				throw new BusinessException();
+			
 			else {
+				UserGroupEntity userGroupEntity = userEntity.getUserGroupEntity().get(0);
+				String groupName= userGroupEntity.getGroup().getName();
 				for (Iterator<UserUserEntity> iterator = userEntity
 						.getCustomerEntityList().iterator(); iterator.hasNext();) {
-					UserDTO nUserDTO = new UserDTO();
-					UserEntity pUserEntity = iterator.next().getUser();
-					nUserDTO.setLoginId(pUserEntity.getLoginId());
-					nUserDTO.setName(pUserEntity.getName());
-					nUserDTO.setHp(pUserEntity.getContactHm());
-					nUserDTO.setEmail(pUserEntity.getEmail());
-					nUserDTO.setAddress(pUserEntity.getAddress());
-					nUserDTO.setCompany(pUserEntity.getCompany());
-					customerList.add(nUserDTO);
+					{
+						UserUserEntity userUserEntity = iterator.next();
+						String relType = userUserEntity.getRelType();
+						UserEntity pUserEntity = userUserEntity.getUser();
+						if((groupName.equals("customer")&&relType.equals("CTOC"))||
+								(groupName.equals("advisor")&&relType.equals("ATOC"))||
+								(groupName.equals("internal")&&relType.equals("ITOC"))){
+							UserDTO nUserDTO = new UserDTO();
+							nUserDTO.setLoginId(pUserEntity.getLoginId());
+							nUserDTO.setName(pUserEntity.getName());
+							nUserDTO.setHp(pUserEntity.getContactHm());
+							nUserDTO.setEmail(pUserEntity.getEmail());
+							nUserDTO.setAddress(pUserEntity.getAddress());
+							nUserDTO.setCompany(pUserEntity.getCompany());
+							nUserDTO.setClientCode(pUserEntity.getClientCode());
+							customerList.add(nUserDTO);
+						}
+					}
 
 				}
 			}
@@ -227,17 +239,100 @@ public class UserServiceImpl extends AbstractService implements UserService {
 						.getAdvisorEntityList();
 				if (userUserEntityList.size() > 0) {
 					UserDTO nUserDTO = new UserDTO();
-					UserEntity pUserEntity = userUserEntityList.get(0)
-							.getBaseUser();
-					nUserDTO.setLoginId(pUserEntity.getLoginId());
-					nUserDTO.setName(pUserEntity.getName());
-					nUserDTO.setHp(pUserEntity.getContactHm());
-					nUserDTO.setEmail(pUserEntity.getEmail());
-					nUserDTO.setAddress(pUserEntity.getAddress());
-					nUserDTO.setCompany(pUserEntity.getCompany());
-					return nUserDTO;
+					
+					for (Iterator iterator = userUserEntityList.iterator(); iterator
+							.hasNext();) {
+						UserUserEntity userUserEntity = (UserUserEntity) iterator
+								.next();
+						if(userUserEntity.getRelType().equals("ATOC")){
+							UserEntity pUserEntity=userUserEntity.getBaseUser();
+							nUserDTO.setLoginId(pUserEntity.getLoginId());
+							nUserDTO.setName(pUserEntity.getName());
+							nUserDTO.setHp(pUserEntity.getContactHm());
+							nUserDTO.setEmail(pUserEntity.getEmail());
+							nUserDTO.setAddress(pUserEntity.getAddress());
+							nUserDTO.setCompany(pUserEntity.getCompany());
+							return nUserDTO;
+						}
+						
+					}
+					
 				}
-				throw new BusinessException("no advisor found");
+				return null;
+			}
+		} catch (DAOException e) {
+			throw new BusinessException(e);
+		}
+	}
+	@Override
+	public UserDTO getInternalUser(String id) throws BusinessException {
+		try {
+
+			UserEntity userEntity = userDAO.getUser(id);
+			if (userEntity == null)
+				throw new BusinessException("no such user");
+			else {
+				List<UserUserEntity> userUserEntityList = userEntity
+						.getAdvisorEntityList();
+				if (userUserEntityList.size() > 0) {
+					UserDTO nUserDTO = new UserDTO();
+					
+					for (Iterator iterator = userUserEntityList.iterator(); iterator
+							.hasNext();) {
+						UserUserEntity userUserEntity = (UserUserEntity) iterator
+								.next();
+						if(userUserEntity.getRelType().equals("ITOC")){
+							UserEntity pUserEntity=userUserEntity.getBaseUser();
+							nUserDTO.setLoginId(pUserEntity.getLoginId());
+							nUserDTO.setName(pUserEntity.getName());
+							nUserDTO.setHp(pUserEntity.getContactHm());
+							nUserDTO.setEmail(pUserEntity.getEmail());
+							nUserDTO.setAddress(pUserEntity.getAddress());
+							nUserDTO.setCompany(pUserEntity.getCompany());
+							return nUserDTO;
+						}
+						
+					}
+					
+				}
+				return null;
+			}
+		} catch (DAOException e) {
+			throw new BusinessException(e);
+		}
+	}
+	@Override
+	public UserDTO getCustomerByCustomer(String id) throws BusinessException {
+		try {
+
+			UserEntity userEntity = userDAO.getUser(id);
+			if (userEntity == null)
+				throw new BusinessException("no such user");
+			else {
+				List<UserUserEntity> userUserEntityList = userEntity
+						.getAdvisorEntityList();
+				if (userUserEntityList.size() > 0) {
+					UserDTO nUserDTO = new UserDTO();
+					
+					for (Iterator iterator = userUserEntityList.iterator(); iterator
+							.hasNext();) {
+						UserUserEntity userUserEntity = (UserUserEntity) iterator
+								.next();
+						if(userUserEntity.getRelType().equals("CTOC")){
+							UserEntity pUserEntity=userUserEntity.getBaseUser();
+							nUserDTO.setLoginId(pUserEntity.getLoginId());
+							nUserDTO.setName(pUserEntity.getName());
+							nUserDTO.setHp(pUserEntity.getContactHm());
+							nUserDTO.setEmail(pUserEntity.getEmail());
+							nUserDTO.setAddress(pUserEntity.getAddress());
+							nUserDTO.setCompany(pUserEntity.getCompany());
+							return nUserDTO;
+						}
+						
+					}
+					
+				}
+				return null;
 			}
 		} catch (DAOException e) {
 			throw new BusinessException(e);
@@ -255,16 +350,91 @@ public class UserServiceImpl extends AbstractService implements UserService {
 					address, company)) {
 				UserEntity advisor = userDAO
 						.getUserByClientCode(advisor_clientCode);
+				UserEntity customer = userDAO.getUser(id);
+				
 				if (advisor != null) {
-					UserEntity customer = userDAO.getUser(id);
-
+					//user can be recommended by internal, advisor or user
+					String groupName = advisor.getUserGroupEntity().get(0).getGroup().getName();					
+					//create direct relationship
 					UserUserEntity userUserEntity = new UserUserEntity();
 					userUserEntity.setBaseUser(advisor);
 					userUserEntity.setUser(customer);
 					userUserEntity.setCreateBy(id);
 					userUserEntity.setUpdateBy(id);
-					userUserEntity.setRelType("ATOC");
+					
+					if("advisor".equals(groupName))
+						userUserEntity.setRelType("ATOC");
+					else if("internal".equals(groupName))
+						userUserEntity.setRelType("ITOC");
+					else if("customer".equals(groupName))
+						userUserEntity.setRelType("CTOC");
 					userUserDAO.addUserUser(userUserEntity);
+					
+					
+					//create relationship between internal user and customer
+					if("advisor".equals(groupName)){
+						UserUserEntity iUserUserEntity = new UserUserEntity();
+						iUserUserEntity.setUser(customer);
+						iUserUserEntity.setCreateBy(id);
+						iUserUserEntity.setUpdateBy(id);
+						//get internal user of this advisor
+						List<UserUserEntity> userUserEntityList = advisor.getAdvisorEntityList();
+						for (Iterator<UserUserEntity> iterator = userUserEntityList.iterator(); iterator
+								.hasNext();) {
+							UserUserEntity pUserUserEntity = (UserUserEntity) iterator.next();
+							if(pUserUserEntity.getRelType().equals("ITOA")){
+								UserEntity internalUser = pUserUserEntity.getBaseUser();
+								iUserUserEntity.setBaseUser(internalUser);
+								iUserUserEntity.setRelType("ITOC");
+								break;
+							}
+							
+						}
+						userUserDAO.addUserUser(iUserUserEntity);
+					}
+					
+					else if("customer".equals(groupName)){
+						//get advisor of this customer
+						
+						List<UserUserEntity> userUserEntityList = advisor.getAdvisorEntityList();
+						if(userUserEntityList != null && userUserEntityList.size() >0){
+							
+						UserEntity pAdvisor = null;
+						for (Iterator<UserUserEntity> iterator = userUserEntityList.iterator(); iterator
+								.hasNext();) {
+							UserUserEntity pUserUserEntity = (UserUserEntity) iterator.next();
+							if(pUserUserEntity.getRelType().equals("ATOC")){
+								pAdvisor = pUserUserEntity.getBaseUser();
+								break;
+							}
+						
+						}
+						if(pAdvisor != null){
+							UserUserEntity iUserUserEntity = new UserUserEntity();
+							iUserUserEntity.setUser(customer);
+							iUserUserEntity.setCreateBy(id);
+							iUserUserEntity.setUpdateBy(id);
+							//get internal user of this advisor
+							List<UserUserEntity> pUserUserEntityList = pAdvisor.getAdvisorEntityList();
+							for (Iterator<UserUserEntity> iterator = pUserUserEntityList.iterator(); iterator
+									.hasNext();) {
+								UserUserEntity pUserUserEntity = (UserUserEntity) iterator.next();
+								if(pUserUserEntity.getRelType().equals("ITOA")){
+									UserEntity internalUser = pUserUserEntity.getBaseUser();
+									iUserUserEntity.setBaseUser(internalUser);
+									iUserUserEntity.setRelType("ITOC");
+									break;
+								}
+								
+							}
+							userUserDAO.addUserUser(iUserUserEntity);
+						}
+						
+						
+						}
+						
+						
+					}
 				}
 				return true;
 			} else
@@ -1337,16 +1507,19 @@ public class UserServiceImpl extends AbstractService implements UserService {
 			else {
 				for (Iterator<UserUserEntity> iterator = userEntity
 						.getCustomerEntityList().iterator(); iterator.hasNext();) {
-					UserDTO nUserDTO = new UserDTO();
-					UserEntity pUserEntity = iterator.next().getUser();
-					nUserDTO.setLoginId(pUserEntity.getLoginId());
-					nUserDTO.setName(pUserEntity.getName());
-					nUserDTO.setHp(pUserEntity.getContactHm());
-					nUserDTO.setEmail(pUserEntity.getEmail());
-					nUserDTO.setAddress(pUserEntity.getAddress());
-					nUserDTO.setCompany(pUserEntity.getCompany());
-					customerList.add(nUserDTO);
-
+					
+					UserUserEntity userUserEntity = iterator.next();
+					if(userUserEntity.getRelType().equals("ITOA")){
+						UserDTO nUserDTO = new UserDTO();
+						UserEntity pUserEntity = userUserEntity.getUser();
+						nUserDTO.setLoginId(pUserEntity.getLoginId());
+						nUserDTO.setName(pUserEntity.getName());
+						nUserDTO.setHp(pUserEntity.getContactHm());
+						nUserDTO.setEmail(pUserEntity.getEmail());
+						nUserDTO.setAddress(pUserEntity.getAddress());
+						nUserDTO.setCompany(pUserEntity.getCompany());
+						customerList.add(nUserDTO);
+					}
 				}
 			}
 			return customerList;

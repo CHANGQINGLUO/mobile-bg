@@ -52,6 +52,10 @@ public interface UserService
 	
 	UserDTO getAdvisor(String id) throws BusinessException;
 	
+	UserDTO getInternalUser(String id) throws BusinessException;
+	
+	UserDTO getCustomerByCustomer(String id) throws BusinessException;
+	
 	List<UserDTO> getProxies() throws BusinessException;
 	
 	List<UserDTO> getCustomers() throws BusinessException;

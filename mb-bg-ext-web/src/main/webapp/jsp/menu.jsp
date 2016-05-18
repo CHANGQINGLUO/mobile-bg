@@ -67,7 +67,7 @@
 			<a href="/mb-bg-ext-web/web/admin_list_transfers">查询转帐记录</a>
 		</div>
 		<div class="sub-menu">
-			<a href="/mb-bg-ext-web/web/admin_create_transfer">转帐给代理商</a>
+			<a href="/mb-bg-ext-web/web/admin_create_transfer">转帐</a>
 		</div>
 	</div>
 </div>

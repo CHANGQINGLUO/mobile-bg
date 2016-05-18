@@ -384,8 +384,16 @@ public class AdminController {
 		try {
 			UserDTO dto = userService.getUser(loginId);
 			model.addAttribute("userDTO", dto);
+			
 			UserDTO advisorDto = userService.getAdvisor(loginId);
-			model.addAttribute("advisorDTO", advisorDto);
+			UserDTO customerDto = userService.getCustomerByCustomer(loginId);
+			UserDTO internalDto = userService.getInternalUser(loginId);
+			if(customerDto != null)
+				model.addAttribute("advisorDTO", customerDto);
+			else if(advisorDto != null)
+				model.addAttribute("advisorDTO", advisorDto);
+			else if(internalDto != null)
+				model.addAttribute("advisorDTO", internalDto);
 		} catch (BusinessException e) {
 			logger.error("modify order error: " + e.getMessage());
 		}
@@ -684,14 +692,36 @@ public class AdminController {
 			OrderDTO orderDTO = userService.getOrderByNumber(orderNumber);
 			String loginId = orderDTO.getLoginId();
 			UserDTO advisor = userService.getAdvisor(loginId);
+			UserDTO customer = userService.getCustomerByCustomer(loginId);
+			UserDTO internalUser = userService.getInternalUser(loginId);
 			if (advisor != null) {
 				IncomeDTO incomeDTO = new IncomeDTO();
 
 				incomeDTO.setOrderUuid(orderDTO.getUuid());
 				incomeDTO.setLoginId(advisor.getLoginId());
-				incomeDTO.setRate(Constants.RATE);
+				incomeDTO.setRate(Constants.ADVISOR_RATE);
 				incomeDTO.setAmount(orderDTO.getAmount().multiply(
-						Constants.RATE));
+						Constants.ADVISOR_RATE));
+				userService.addIncome(incomeDTO);
+			}
+			if (customer != null) {
+				IncomeDTO incomeDTO = new IncomeDTO();
+
+				incomeDTO.setOrderUuid(orderDTO.getUuid());
+				incomeDTO.setLoginId(customer.getLoginId());
+				incomeDTO.setRate(Constants.CUSTOMER_RATE);
+				incomeDTO.setAmount(orderDTO.getAmount().multiply(
+						Constants.CUSTOMER_RATE));
+				userService.addIncome(incomeDTO);
+			}
+			if (internalUser != null) {
+				IncomeDTO incomeDTO = new IncomeDTO();
+
+				incomeDTO.setOrderUuid(orderDTO.getUuid());
+				incomeDTO.setLoginId(internalUser.getLoginId());
+				incomeDTO.setRate(Constants.INTERNAL_RATE);
+				incomeDTO.setAmount(orderDTO.getAmount().multiply(
+						Constants.INTERNAL_RATE));
 				userService.addIncome(incomeDTO);
 			}
 		} catch (BusinessException e) {
